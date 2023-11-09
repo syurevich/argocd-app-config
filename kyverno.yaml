@@ -9,6 +9,8 @@ spec:
       elements:
       - cluster: sy08
         url: https://api.sy08.cloudcitst.shoot.canary.k8s-hana.ondemand.com
+      - cluster: sy09
+        url: https://api.sy09.cloudcitst.shoot.canary.k8s-hana.ondemand.com
   template:
     metadata:
       name: '{{cluster}}-kyverno'
