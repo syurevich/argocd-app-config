@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kyverno
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster: sy08
+        url: https://api.sy08.cloudcitst.shoot.canary.k8s-hana.ondemand.com
+  template:
+    metadata:
+      name: '{{cluster}}-kyverno'
+    spec:
+      project: default
+      sources:
+        - chart: kyverno
+          repoURL: https://kyverno.github.io/kyverno
+          targetRevision: 2.7.1
+          helm:
+            valueFiles:
+              - $values_installer/version/kyverno/values.yaml
+              - $values_systems/{{cluster}}/kyverno/values.yaml
+        - repoURL: 'https://bitbucket.org/wishboxteam/duve-staging-k8s.git'
+          targetRevision: HEAD
+          ref: values
+        - repoURL: "https://github.com/syurevich/backend-installer.git"
+          targetRevision: HEAD
+          ref: values_installer
+        - repoURL: "https://github.com/syurevich/backend-systems.git"
+          targetRevision: HEAD
+          ref: values_systems
+      destination:
+        server: '{{url}}'
+        namespace: kyverno
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+        - Replace=true
+        automated:
+          selfHeal: true
+          prune: true
+
+
