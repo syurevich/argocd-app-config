@@ -22,9 +22,6 @@ spec:
             valueFiles:
               - $values_installer/version/kyverno/values.yaml
               - $values_systems/{{cluster}}/kyverno/values.yaml
-        - repoURL: 'https://bitbucket.org/wishboxteam/duve-staging-k8s.git'
-          targetRevision: HEAD
-          ref: values
         - repoURL: "https://github.com/syurevich/backend-installer.git"
           targetRevision: HEAD
           ref: values_installer
